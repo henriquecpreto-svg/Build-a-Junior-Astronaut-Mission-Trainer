@@ -7,12 +7,75 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/responsive.css">
+
+    <script defer src="js/main.js"></script>
+    <script defer src="js/education.js"></script>
 </head>
 <body>
-    <h1>Build a Junior Astronaut Mission Trainer</h1>
-    <button id="botao-inciar">Iniciar</button>
-    <div class="card1">
-        <h2>1°</h2>
-    </div>    
+    <div class="conteiner-all">
+        <div class="ceu">
+            <div class="estrelas"></div>
+            <div class="estrelas-pequenas"></div> 
+        </div>
+        <h1>Build a Junior Astronaut Mission Trainer</h1>
+        <img src="assets/images/logo-jogo.png" alt="Logo Jogo" width="300">
+
+        <div class="buttons">
+        <button id="botao-inciar">Iniciar Missão</button>
+        <button id="botao-comojogar" onclick="instrucoes()">Como jogar?</button>
+        <button id="botao-sobre" onclick="sobreProjeto()">Sobre o projeto</button>
+        </div>
+
+
+
+        <div class="como-jogar hidden" id="cards">
+            <div class="card">
+                <h2>1° História</h2>
+                <p>Ano de 2045. <br>
+                Uma missão internacional estabeleceu uma pequena base científica em Marte com o objetivo de estudar as condições ambientais do planeta e testar tecnologias necessárias para futuras missões humanas.  <br> <br>
+                O primeiro astronauta já está instalada no habitat. <br> <br>
+            Entretanto, manter uma presença humana em Marte exige planejamento, recursos e decisões constantes. <br> <br>
+            O jogador assume o cargo do astronauta, recebendo a responsabilidade de administrar a instalação durante seus primeiros 30 dias. <br> <br>
+            Durante esse período, problemas ambientais, falhas técnicas e limitações de recursos poderão colocar a operação em risco. <br> <br>
+            O sucesso dependerá da capacidade de equilibrar as suas necessidades e a infraestrutura disponível.</p>
+            </div>
+            <div class="card">
+                <h2>2° Objetivo</h2>
+                <p>O seu objetivo é: </p>
+                    <ul>
+                        <li>Garantir o funcionamento dos sistemas de suporte à vida.</li>
+                        <li>Administrar os recursos disponíveis.</li>
+                        <li>Se proteger contra condições ambientais perigosas.</li>
+                        <li>Manter a infraestrutura em boas condições.</li>
+                        <li>Solucionar problemas inesperados.</li>
+                        <li>Concluir os objetivos científicos da missão.</li>
+                    </ul>
+                
+            </div> 
+            <div class="card">
+                <h2>3° Funcionamento dos Turnos</h2>
+                <p>Cada dia está dividido em cinco etapas: </p>
+                <ol>
+                    <li>Monitoramento: Vizualizar os indicadores e alertas.</li>
+                    <li>Planejamento: O jogador recebe as prioridades.</li>
+                    <li>Ações: Executar até duas ações adiministrativas.</li>
+                    <li>Simulação: O sistema calcula produção, consumo e eventos.</li>
+                    <li>Relatório: Você recebe os resultados dos dias.</li>
+                </ol>
+            </div> 
+            <button class="fechar-instrucoes" onclick="fecharInstrucoes()">Fechar Instruções</button>    
+        </div>
+
+        <div class="sobre-o-projeto hidden" id="sobreprojeto">
+            <div class="card">
+                <h2>BUILD A JUNIOR ASTRONAUT MISSION TRAINER</h2>
+                <p>O Build a Junior Astronaut Mission Trainer é um simulador educativo no qual o jogador assume o comando de uma base de exploração humana em Marte. <br>
+                Sua responsabilidade é administrar os recursos da instalação, se manter em condições adequadas e solucionar problemas que podem comprometer o sucesso da missão. <br>
+                O jogo apresenta situações inspiradas em desafios reais da engenharia espacial, exigindo que o jogador tome decisões considerando as limitações de energia, água, oxigênio, alimentos e proteção contra radiação. <br>
+                A experiência será apresentada por meio de uma central de controle interativa, na qual o usuário poderá acompanhar os indicadores da missão, construir instalações, realizar melhorias e responder a acontecimentos inesperados.</p>
+            </div>
+            <button onclick="fecharSobre()">Fechar</button>
+        </div>
+    </div>
 </body>
 </html>

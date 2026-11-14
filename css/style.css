@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Share+Tech+Mono&display=swap');
+
+:root {
+    --background-color: #171b22;
+    --panels: #242b35;
+    --text-color: #E8E8E8;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Share Tech Mono', monospace;
+}
+
+#botao-inciar {
+    background-color: yellow;
+    border: none;
+    padding: 20px 40px;
+    border-radius: 10px;
+    font-family: 'Share Tech Mono', monospace;
+    color: white;
+    position: center;
+}
+
+.card1 {
+    background-color: white;
+    padding: 100px 40px;
+    border-radius: 10px;
+    margin-top: 30px;
+    color: black;
+}

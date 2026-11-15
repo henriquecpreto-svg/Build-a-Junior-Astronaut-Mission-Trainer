@@ -24,11 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     window.sobreProjeto = function() {
-        $("sobreprojeto").classList.remove("hidden");
+    $("sobreprojeto").classList.remove("hidden");
+    $("botao-iniciar").classList.add("hidden");
+    $("botao-comojogar").classList.add("hidden");
+    $("botao-sobre").classList.add("hidden");
     };
 
     window.fecharSobre = function() {
-        $("sobreprojeto").classList.add("hidden");
+    $("sobreprojeto").classList.add("hidden");
+    $("botao-iniciar").classList.remove("hidden");
+    $("botao-comojogar").classList.remove("hidden");
+    $("botao-sobre").classList.remove("hidden");
     };
 
     botaoIniciar.addEventListener("click", () => {
@@ -77,8 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const indicadores = [
             {
-                nome: "👨‍🚀 Tripulação",
-                valor: Simulation.tripulacao
+                nome: "👨‍🚀 Saúde do astronauta",
+                valor: Simulation.saudeTripulante
             },
             {
                 nome: "🏠 Integridade do habitat",
@@ -165,21 +171,26 @@ document.addEventListener("DOMContentLoaded", () => {
         );
 
         if (oficina && oficina.construido) {
+            const cardReparo = document.createElement("article");
+            cardReparo.className = "installation-card";
 
-            const botaoReparo = document.createElement("button");
+            cardReparo.innerHTML = `
+                <h3>🔧 Manutenção do Habitat</h3>
+                <p>Restaura +25% da integridade do habitat.</p>
+                <p>Custo: 10 materiais</p>
+                <p>Integridade atual: ${Simulation.habitat.toFixed(0)}%</p>
+                <button id="botao-reparar-habitat" ${Simulation.habitat >= 100 ? "disabled" : ""}>
+                    ${Simulation.habitat >= 100 ? "Habitat íntegro" : "Reparar habitat"}
+                </button>
+            `;
 
-            botaoReparo.textContent = "🔧 Reparar habitat";
+            cardReparo
+                .querySelector("#botao-reparar-habitat")
+                .addEventListener("click", () => {
+                    mostrarResultado(Simulation.repararHabitat());
+                });
 
-            botaoReparo.addEventListener("click", () => {
-
-                mostrarResultado(
-                    Simulation.repararHabitat()
-                );
-
-            });
-
-            container.appendChild(botaoReparo);
-
+            container.appendChild(cardReparo);
         }
 
         container.querySelectorAll("[data-construir]")
@@ -232,8 +243,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const p = document.createElement("p");
 
-            p.textContent =
-                `${evento.nome} — ${evento.diasRestantes} dia(s) restante(s)`;
+        p.textContent =
+        `${evento.nome} (${evento.diasRestantes} dia(s) restante(s)) — ${evento.descricao}`;
 
             container.appendChild(p);
 

@@ -63,6 +63,26 @@ window.Events = {
             efeitos: {
                 producaoEnergia: 1.2
             }
+        },
+        {
+            id: "tempestadeSevera",
+            nome: "🌪 Tempestade severa",
+            descricao: "Uma tempestade intensa atingiu a base e danificou sua estrutura.",
+            duracao: 1,
+            danos: {
+                habitat: 20
+            },
+            efeitos: {}
+        },
+        {
+            id: "falhaEstrutural",
+            nome: "⚠️ Falha estrutural",
+            descricao: "Uma falha comprometeu a estrutura do habitat.",
+            duracao: 1,
+            danos: {
+                habitat: 15
+            },
+            efeitos: {}
         }
     ],
 
@@ -111,9 +131,31 @@ window.Events = {
         if (evento.imediato) {
             Object.entries(evento.imediato).forEach(
                 ([id, quantidade]) => {
-                    Resources.update(id, quantidade);
+
+                    if (id === "habitat") {
+                        Simulation.habitat = Math.max(
+                            0,
+                            Math.min(100, Simulation.habitat + quantidade)
+                        );
+                    } else {
+                        Resources.update(id, quantidade);
+                    }
+
                 }
             );
+        }
+
+        if (evento.danos) {
+            if (evento.danos.habitat) {
+                Simulation.receberDanoHabitat(evento.danos.habitat);
+            }
+
+            if (evento.danos.saude) {
+                Simulation.saudeTripulante = Math.max(
+                    0,
+                    Simulation.saudeTripulante - evento.danos.saude
+                );
+            }
         }
 
         this.recalcularModificadores();
@@ -149,6 +191,14 @@ window.Events = {
         );
 
         return this.iniciarEvento(disponiveis[indice]);
+    },
+
+    calcularDano: function(dano) {
+    const protecao = Simulation.protecao || 0;
+
+    const danoFinal = dano * (1 - protecao / 100);
+
+    return Math.max(0, danoFinal);
     },
 
     calcularProducao: function(recurso, bonusInstalacao) {

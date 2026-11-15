@@ -19,8 +19,8 @@ window.Resources = {
             max: 150,
             color: "#76b8ee",
             current: 100,
-            production: 5,
-            consumption: 14
+            production: 8,
+            consumption: 12
         },
         {
             id: "oxygen",
@@ -41,8 +41,8 @@ window.Resources = {
             max: 150,
             color: "#9fca77",
             current: 100,
-            production: 2,
-            consumption: 12
+            production: 7,
+            consumption: 11
         },
         {
             id: "materials",
@@ -51,8 +51,8 @@ window.Resources = {
             unit: "UM",
             max: 100,
             color: "#d7a782",
-            current: 60,
-            production: 0,
+            current: 80,
+            production: 2,
             consumption: 0
         }
     ],

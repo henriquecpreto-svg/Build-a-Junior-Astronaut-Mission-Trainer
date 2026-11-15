@@ -7,7 +7,6 @@ window.Simulation = {
   finalizada: false,
   resultado: null,
 
-  tripulacao: 1,
   saudeTripulante: 100,
   habitat: 100,
   protecao: 60,
@@ -16,6 +15,7 @@ window.Simulation = {
     {
       id: "solar",
       nome: "Painéis solares adicionais",
+      descricao: "Aumentam a produção diária de energia.",
       custo: 20,
       energyCost: 0,
       effect: {
@@ -23,34 +23,41 @@ window.Simulation = {
         production: 5
       },
       construido: false,
+      status: "operational",
       eficiencia: 100
     },
     {
       id: "greenhouse",
       nome: "Estufa hidropônica",
+      descricao: "Aumenta a produção diária de alimentos.",
       custo: 25,
       energyCost: 0,
       effect: {
         resource: "food",
-        production: 3
+        production: 5
       },
-      construido: false,eficiencia: 100
+      construido: false,
+      status: "operational",
+      eficiencia: 100
     },
     {
       id: "recycler",
       nome: "Reciclador de água",
+      descricao: "Aumenta a produção diária de água.",
       custo: 20,
       energyCost: 0,
       effect: {
         resource: "water",
-        production: 3
+        production: 5
       },
       construido: false,
+      status: "operational",
       eficiencia: 100
     },
     {
       id: "oxygen",
       nome: "Unidade de oxigênio",
+      descricao: "Aumenta a produção diária de oxigênio.",
       custo: 25,
       energyCost: 0,
       effect: {
@@ -58,15 +65,18 @@ window.Simulation = {
         production: 3
       },
       construido: false,
+      status: "operational",
       eficiencia: 100
     },
     {
       id: "shelter",
       nome: "Abrigo reforçado",
+      descricao: "Aumenta a proteção da base contra ameaças externas.",
       custo: 30,
       energyCost: 0,
       effect: {
         system: "protection",
+        status: "operational",
         value: 10
       },
       construido: false,
@@ -75,6 +85,7 @@ window.Simulation = {
     {
       id: "workshop",
       nome: "Oficina de manutenção",
+      descricao: "Permite reparar o habitat e instalações danificadas.",
       custo: 20,
       energyCost: 0,
       effect: {
@@ -82,6 +93,7 @@ window.Simulation = {
         value: 1
       },
       construido: false,
+      status: "operational",
       eficiencia: 100
     }
   ],
@@ -111,18 +123,20 @@ window.Simulation = {
 },
 
   verificarSobrevivencia: function() {
-      const recursosVitais = ["water", "oxygen", "food"];
-      for (let id of recursosVitais) {
-          const recurso = Resources.items.find(
-              item => item.id === id
-          );
-          if (recurso.current <= 0) {
-              console.log(`Missão comprometida: falta de ${recurso.nome}.`);
-              return false;
-          }
-      }
-      return true;
+    if (this.saudeTripulante <= 0) {
+        console.log("O astronauta não sobreviveu.");
+        return false;
+    }
+
+    if (this.habitat <= 0) {
+        console.log("O habitat foi destruído.");
+        return false;
+    }
+
+    return true;
   },
+  
+  
 
   finalizarMissao: function(resultado) {
     this.estadoMissao = resultado;
@@ -155,17 +169,41 @@ window.Simulation = {
 
   novoDia: function() {
     if (this.estadoMissao !== "Em andamento") {
-        return;
+        return [];
     }
-    Events.sortearEvento();
+
+    const relatorio = [];
+
     this.atualizarRecursos();
     Events.atualizarEventos();
+    this.atualizarSaude();
+
+    relatorio.push(`📅 Fim do Dia ${this.dia}. Produção e consumo processados.`);
+
     if (this.verificarFimMissao()) {
-        return;
+        if (this.resultado === "vitoria") {
+            relatorio.push("🏆 Todos os 30 dias da missão foram concluídos!");
+        } else {
+            relatorio.push("🚨 Condições críticas atingidas. A missão foi encerrada.");
+        }
+        return relatorio;
     }
+
+    const eventoSorteado = Events.sortearEvento();
+    if (eventoSorteado) {
+        relatorio.push(`${eventoSorteado.nome}: ${eventoSorteado.descricao}`);
+    } else {
+        relatorio.push("✅ Nenhum imprevisto ocorreu hoje.");
+    }
+
     this.dia++;
     this.acoesDisponiveis = 2;
-    console.log("Dia " + this.dia + " iniciado.");
+
+    return relatorio;
+},
+
+proximoDia: function() {
+    return this.novoDia();
 },
 
   calcularBonusProducao: function(resourceId) {
@@ -193,6 +231,12 @@ window.Simulation = {
   repararInstalacao: function(id) {
     const instalacao = this.instalacoes.find(item => item.id === id);
 
+    const oficina = this.instalacoes.find(item => item.id === "workshop" && item.construido);
+
+    if (!oficina) {
+      return "Você precisa construir a oficina primeiro.";
+    }
+
     if (!instalacao || !instalacao.construido) {
       return "Instalação indisponível.";
     }
@@ -201,19 +245,70 @@ window.Simulation = {
       return "Essa instalação não precisa de reparos.";
     }
 
-    const materiais = Resources.items.find(item => item.id === "materials");
+    const materiais = Resources.get("materials");
+
+    if (!materiais) {
+        return "Recurso de materiais não encontrado.";
+    }
     const custoReparo = 10;
 
     if (materiais.current < custoReparo) {
       return "Materiais insuficientes para o reparo.";
+    }
+    if (this.acoesDisponiveis <= 0) {
+    return "Você não possui mais ações disponíveis hoje.";
     }
 
     materiais.current -= custoReparo;
 
     instalacao.eficiencia = 100;
     instalacao.status = "operational";
+    this.acoesDisponiveis--;
 
     return `${instalacao.nome} foi reparada!`;
+  },
+
+  repararHabitat: function() {
+    if (this.acoesDisponiveis <= 0) {
+        return "Você não possui mais ações disponíveis hoje.";
+    }
+
+    const oficina = this.instalacoes.find(
+        item => item.id === "workshop" && item.construido
+    );
+
+    if (!oficina) {
+        return "Você precisa construir a oficina primeiro.";
+    }
+
+    if (this.habitat >= 100) {
+        return "O habitat não precisa de reparos.";
+    }
+
+    const materiais = Resources.get("materials");
+    const custo = 10;
+
+    if (!materiais || materiais.current < custo) {
+        return "Materiais insuficientes.";
+    }
+
+    materiais.current -= custo;
+
+    this.habitat = Math.min(100, this.habitat + 25);
+
+    this.acoesDisponiveis--;
+
+    return "Habitat reparado com sucesso!";
+  },
+
+  receberDanoHabitat: function(dano) {
+    const reducao = this.protecao / 100;
+    const danoFinal = dano * (1 - reducao);
+
+    this.habitat = Math.max(
+      0,
+      this.habitat - danoFinal
+    );
   },
 
    construirInstalacao: function(id) {
@@ -227,10 +322,18 @@ window.Simulation = {
       return "Essa instalação já foi construída.";
     }
 
-    const materiais = Resources.items.find(item => item.id === "materials");
+    const materiais = Resources.get("materials");
+
+    if (!materiais) {
+        return "Recurso de materiais não encontrado.";
+    }
 
     if (materiais.current < instalacao.custo) {
-      return "Materiais insuficientes.";
+        return "Materiais insuficientes.";
+    }
+
+    if (this.acoesDisponiveis <= 0) {
+    return "Você não possui mais ações disponíveis hoje.";
     }
 
     materiais.current -= instalacao.custo;
@@ -238,9 +341,32 @@ window.Simulation = {
     instalacao.construido = true;
     instalacao.eficiencia = 100;
     instalacao.status = "operational";
+    this.acoesDisponiveis--;
+    if (instalacao.effect.system === "protection") {
+    this.protecao += instalacao.effect.value;
+    }
 
     return `${instalacao.nome} construída com sucesso!`;
+    
   },
+
+  construir: function(id) {
+    return this.construirInstalacao(id);
+},
+
+atualizarSaude: function() {
+    const recursosVitais = ["water", "oxygen", "food"];
+
+    for (let i = 0; i < recursosVitais.length; i++) {
+        const recurso = Resources.get(recursosVitais[i]);
+
+        if (recurso && recurso.current <= 10) {
+            this.saudeTripulante -= 10;
+        }
+    }
+
+    this.saudeTripulante = Math.max(0, this.saudeTripulante);
+},
 
   reset: function() {
     this.dia = 1;
@@ -250,7 +376,6 @@ window.Simulation = {
     this.finalizada = false;
     this.resultado = null;
 
-    this.tripulacao = 1;
     this.saudeTripulante = 100;
     this.habitat = 100;
     this.protecao = 60;

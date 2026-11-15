@@ -42,7 +42,7 @@ window.Events = {
             descricao: "A incidência de luz solar está abaixo do esperado.",
             duracao: 1,
             efeitos: {
-                producaoEnergia: 0.75
+                producaoEnergia: 0.55
             }
         },
         {
@@ -51,7 +51,7 @@ window.Events = {
             descricao: "Um vazamento provocou perdas na reserva de água.",
             duracao: 1,
             imediato: {
-                water: -15
+                water: -20
             },
             efeitos: {}
         },
@@ -175,7 +175,7 @@ window.Events = {
         this.recalcularModificadores();
     },
 
-    sortearEvento(chance = 0.25) {
+    sortearEvento(chance = 0.40) {
         if (Math.random() >= chance) return null;
 
         const disponiveis = this.eventos.filter(evento =>

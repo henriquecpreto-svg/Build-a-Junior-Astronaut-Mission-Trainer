@@ -290,7 +290,7 @@ proximoDia: function() {
 
     materiais.current -= custo;
 
-    this.habitat = Math.min(100, this.habitat + 25);
+    this.habitat = Math.min(100, this.habitat + 10);
 
     this.acoesDisponiveis--;
 

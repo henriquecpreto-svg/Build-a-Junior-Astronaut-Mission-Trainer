@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             cardReparo.innerHTML = `
                 <h3>🔧 Manutenção do Habitat</h3>
-                <p>Restaura +25% da integridade do habitat.</p>
+                <p>Restaura +10% da integridade do habitat.</p>
                 <p>Custo: 10 materiais</p>
                 <p>Integridade atual: ${Simulation.habitat.toFixed(0)}%</p>
                 <button id="botao-reparar-habitat" ${Simulation.habitat >= 100 ? "disabled" : ""}>

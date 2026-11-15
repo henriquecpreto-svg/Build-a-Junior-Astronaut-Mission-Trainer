@@ -1,0 +1,91 @@
+@media (max-width: 768px) {
+
+    .conteiner-all {
+        height: auto;
+        min-height: 100vh;
+        padding: 25px 15px;
+    }
+
+    .conteiner-all > img {
+        width: min(320px, 90%);
+    }
+
+    button {
+        width: min(400px, 90vw);
+        font-size: 18px;
+    }
+
+    h1 {
+        font-size: 35px;
+    }
+
+    .como-jogar,
+    .sobre-o-projeto {
+        margin-inline: 0;
+        width: 100%;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    #dashboard {
+        width: 95%;
+        margin-top: 15px;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .dashboard-header h1 {
+        font-size: 23px;
+    }
+
+    .grade-status {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .painel {
+        padding: 15px;
+    }
+
+    .acoes {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .acoes button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .grade-status {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header h1 {
+        font-size: 19px;
+    }
+
+    .contador-de-dia {
+        font-size: 18px;
+    }
+
+    #lista-instalacoes,
+    #conteudo-educativo {
+        grid-template-columns: 1fr;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .painel h2 {
+        font-size: 19px;
+    }
+
+}

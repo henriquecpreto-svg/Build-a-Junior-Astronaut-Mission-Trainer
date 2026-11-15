@@ -115,7 +115,6 @@ window.Education = {
     }
   ],
 
-  // EXPLICAÇÕES DAS DECISÕES
   hints: {
 
     solar:
@@ -148,5 +147,37 @@ window.Education = {
     farm:
       "O cultivo exige água e energia antes de fornecer mais alimentos."
   },
+
+
+    renderizar() {
+        const container = document.getElementById(
+            "conteudo-educativo"
+        );
+
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        this.topics.forEach(topic => {
+            const article = document.createElement("article");
+
+            article.className = "education-card";
+
+            const titulo = document.createElement("h3");
+            titulo.textContent = `${topic.icon} ${topic.title}`;
+
+            const texto = document.createElement("p");
+            texto.textContent = topic.text;
+
+            const fonte = document.createElement("a");
+            fonte.href = topic.url;
+            fonte.target = "_blank";
+            fonte.rel = "noopener noreferrer";
+            fonte.textContent = `Fonte: ${topic.source}`;
+
+            article.append(titulo, texto, fonte);
+            container.appendChild(article);
+        });
+    }
 
 };

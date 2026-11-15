@@ -14,7 +14,7 @@
 }
 
 body {
-    background-image: url("/assets/images/background-img.png");
+    background-image: url("../assets/images/background-img.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -79,12 +79,19 @@ button {
 
 button:hover {
     cursor: pointer;
-    transform: translateY(-20px); 
+    transform: translateY(-5px);
 }
 
-.como-jogar, .sobre-o-projeto {
-    margin-inline: 50vh;
-    transition: transform 0.3s ease-in-out;
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.como-jogar,
+.sobre-o-projeto {
+    width: min(850px, 95%);
+    margin: 20px auto;
 }
 
 .card {

@@ -21,7 +21,7 @@ window.Events = {
         {
             id: "falhaReciclagem",
             nome: "💧 Falha na reciclagem",
-            descricao: "O sistema de reciclagem de água apresentou uma falha.",
+            descricao: "O sistema de reciclagem apresentou uma falha.",
             duracao: 2,
             efeitos: {
                 consumoAgua: 1.4
@@ -29,7 +29,7 @@ window.Events = {
         },
         {
             id: "problemaEstufa",
-            nome: "🌾 Problema na estufa",
+            nome: "🌱 Problema na estufa",
             descricao: "Uma falha comprometeu a produção de alimentos.",
             duracao: 3,
             efeitos: {
@@ -38,7 +38,7 @@ window.Events = {
         },
         {
             id: "baixaLuminosidade",
-            nome: "Baixa luminosidade",
+            nome: "🌑 Baixa luminosidade",
             descricao: "A incidência de luz solar está abaixo do esperado.",
             duracao: 1,
             efeitos: {
@@ -50,14 +50,15 @@ window.Events = {
             nome: "🚨 Vazamento de água",
             descricao: "Um vazamento provocou perdas na reserva de água.",
             duracao: 1,
-            efeitos: {
+            imediato: {
                 water: -15
-            }
+            },
+            efeitos: {}
         },
         {
             id: "manutencao",
             nome: "🔧 Manutenção preventiva",
-            descricao: "Uma manutenção melhorou o desempenho do sistema de energia.",
+            descricao: "Uma manutenção melhorou o desempenho da energia.",
             duracao: 2,
             efeitos: {
                 producaoEnergia: 1.2
@@ -65,116 +66,110 @@ window.Events = {
         }
     ],
 
-    resetarModificadores() {
+    resetar() {
         this.eventosAtivos = [];
-        this.modificadores();
+
+        this.modificadores = {
+            producaoEnergia: 1,
+            consumoAgua: 1,
+            producaoAlimentos: 1
+        };
     },
 
-    recalcularModificadores() {
-        this.resetarModificadores();
+    recalcularModificadores: function() {
+    this.modificadores = {
+        producaoEnergia: 1,
+        consumoAgua: 1,
+        producaoAlimentos: 1
+    };
 
-        this.eventosAtivos.forEach(evento => {
-            for (let efeito in evento.efeitos) {
-                if (efeito in this.modificadores) {
-                    this.modificadores[efeito] *= evento.efeitos[efeito];
-                }
-            }
-        });
-    },
+    for (let i = 0; i < this.eventosAtivos.length; i++) {
+        let efeitos = this.eventosAtivos[i].efeitos;
 
-    aplicarEvento(evento) {
-        for (let efeito in evento.efeitos) {
-            const recurso = Resources.items.find(
-                item => item.id === efeito
-            );
-
-            if (recurso) {
-                recurso.current = Math.max(
-                    0,
-                    Math.min(recurso.max, recurso.current + evento.efeitos[efeito])
-                );
-            }
-        }
-    },
+        this.modificadores.producaoEnergia *= efeitos.producaoEnergia || 1;
+        this.modificadores.consumoAgua *= efeitos.consumoAgua || 1;
+        this.modificadores.producaoAlimentos *= efeitos.producaoAlimentos || 1;
+    }
+},
 
     iniciarEvento(evento) {
+        if (!evento) return null;
+
         if (this.eventosAtivos.some(
             ativo => ativo.id === evento.id
         )) {
             return null;
         }
 
-        const eventoAtivo = {
+        const ativo = {
             ...evento,
             diasRestantes: evento.duracao
         };
 
-        this.eventosAtivos.push(eventoAtivo);
-        this.aplicarEvento(evento);
+        this.eventosAtivos.push(ativo);
+
+        if (evento.imediato) {
+            Object.entries(evento.imediato).forEach(
+                ([id, quantidade]) => {
+                    Resources.update(id, quantidade);
+                }
+            );
+        }
+
         this.recalcularModificadores();
 
-        return eventoAtivo;
+        return ativo;
     },
 
     atualizarEventos() {
-        for (let i = this.eventosAtivos.length - 1; i >= 0; i--) {
-            this.eventosAtivos[i].diasRestantes--;
+        this.eventosAtivos.forEach(evento => {
+            evento.diasRestantes--;
+        });
 
-            if (this.eventosAtivos[i].diasRestantes <= 0) {
-                this.eventosAtivos.splice(i, 1);
-            }
-        }
+        this.eventosAtivos = this.eventosAtivos.filter(
+            evento => evento.diasRestantes > 0
+        );
 
         this.recalcularModificadores();
     },
 
-    sortearEvento(chanceEvento) {
-        if (Math.random() >= chanceEvento) {
-            return null;
-        }
+    sortearEvento(chance = 0.25) {
+        if (Math.random() >= chance) return null;
 
-        const eventosDisponiveis = this.eventos.filter(
-            evento => !this.eventosAtivos.some(
+        const disponiveis = this.eventos.filter(evento =>
+            !this.eventosAtivos.some(
                 ativo => ativo.id === evento.id
             )
         );
 
-        if (eventosDisponiveis.length === 0) {
-            return null;
-        }
+        if (!disponiveis.length) return null;
 
-        const indiceAleatorio = Math.floor(
-            Math.random() * eventosDisponiveis.length
+        const indice = Math.floor(
+            Math.random() * disponiveis.length
         );
 
-        return eventosDisponiveis[indiceAleatorio];
+        return this.iniciarEvento(disponiveis[indice]);
     },
 
-    gerarEventoAleatorio(chanceEvento) {
-        const evento = this.sortearEvento(chanceEvento);
+    calcularProducao: function(recurso, bonusInstalacao) {
+    if (bonusInstalacao === undefined) {
+        bonusInstalacao = 0;
+    }
 
-        if (!evento) {
-            return null;
-        }
+    let modificador = 1;
 
-        return this.iniciarEvento(evento);
-    },
+    if (recurso.id === "energy") {
+        modificador = this.modificadores.producaoEnergia;
+    }
 
-    calcularProducao(recurso) {
-        let modificador = 1;
+    if (recurso.id === "food") {
+        modificador = this.modificadores.producaoAlimentos;
+    }
 
-        if (recurso.id === "energy") {
-            modificador = this.modificadores.producaoEnergia;
-        }
+    return (recurso.production + bonusInstalacao) * modificador;
+},
 
-        if (recurso.id === "food") {
-            modificador = this.modificadores.producaoAlimentos;
-        }
-
-        return recurso.production * modificador;
-    },
-
-    calcularConsumo(recurso) {
+    calcularConsumo: function(recurso) {
         let modificador = 1;
 
         if (recurso.id === "water") {

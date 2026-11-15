@@ -10,7 +10,7 @@ window.Resources = {
       color: "#e4b44c",
       current: 100,
       production: 16,
-      consumption: -10
+      consumption: 10
     },
     agua = {
       id: "water",
@@ -21,7 +21,7 @@ window.Resources = {
       color: "#76b8ee",
       current: 100,
       production: 5,
-      consumption: -14
+      consumption: 14
     },
     oxigenio = {
       id: "oxygen",
@@ -32,7 +32,7 @@ window.Resources = {
       color: "#55b98b",
       current: 100,
       production: 6,
-      consumption: -6
+      consumption: 6
     },
     alimento = {
       id: "food",
@@ -43,7 +43,7 @@ window.Resources = {
       color: "#9fca77",
       current: 100,
       production: 2,
-      consumption: -12
+      consumption: 12
     },
     material = {
       id: "materials",
@@ -51,8 +51,42 @@ window.Resources = {
       icon: "🧱",
       unit: "UM",
       max: 100,
+      current: 60,
+      production: 0,
+      consumption: 0,
       color: "#d7a782",
       current: 60
     }
   ],
-}
+
+  get(id) {
+    return this.items.find(item => item.id == id)
+  },
+
+  update(id, amount) {
+    const resource = this.get(id);
+
+    if (!resource) return;
+
+    resource.current = Math.max(
+      0,
+      Math.min(resource.max, resource.current + amount)
+    );
+  },
+
+  reset() {
+    this.items.forEach( resource => {
+      const initial = {
+        energy: 100,
+        water: 100,
+        oxygen: 100,
+        food: 100,
+        materials: 60
+      };
+
+      resource.current = initial[resource.id]
+    });
+
+  }
+
+};

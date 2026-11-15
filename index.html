@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Build a Junior Astronaut Mission Trainer</title>
+
+    <title>Junior Astronaut Mission Trainer</title>
+
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/responsive.css">
 
-    <script defer src="js/main.js"></script>
+    <script defer src="js/resources.js"></script>
+    <script defer src="js/events.js"></script>
+    <script defer src="js/simulation.js"></script>
     <script defer src="js/education.js"></script>
+    <script defer src="js/main.js"></script>
 </head>
 <body>
     <div class="conteiner-all">
@@ -72,5 +77,59 @@
             <button onclick="fecharSobre()" id="fecharsobre">Fechar</button>
         </div>
     </div>
+
+    <section id="dashboard" class="hidden">
+        <header class="dashboard-header">
+
+            <div>
+                <h1>🚀 CENTRAL DE CONTROLE</h1>
+                <p>Missão Marte - 2045</p>
+            </div>
+
+            <div class="contador-de-dia">
+                DIA <span id="dia">1</span> / 30
+            </div>
+        </header>
+
+        <section class="grade-status" id="status-recursos">
+
+        </section>
+
+        <section class="painel">
+            <h2>🏗 Instações</h2>
+            <div id="lista-instalacoes"></div>
+        </section>
+
+        <section class="painel">
+            <h2>📋 Relatório da missão</h2>
+
+            <div id="relatorio">
+                Aguardando início das operações...
+            </div>
+        </section>
+        
+        <section class="painel">
+            <h2>⚠ Eventos da missão</h2>
+
+            <div id="eventos-ativos">
+                Nenhum evento ativo.
+            </div>
+        </section>
+
+        <section class="painel">
+            <h2>📚 Centro de aprendizagem</h2>
+            <div id="conteudo-educativo"></div>
+        </section>
+
+        <section class="acoes">
+            <button id="botao-proximo-dia">
+                AVANÇAR UM DIA ➜
+            </button>
+
+            <button id="botao-voltar">
+                SAIR DA MISSÃO
+            </button>
+        </section>
+    </section>
 </body>
 </html>

@@ -107,7 +107,7 @@ const instalacoes = [
     },
     built: false,
     efficiency: 100
-  }
+  },
   {
     id: "workshop",
     name: "Oficina de manutenção",

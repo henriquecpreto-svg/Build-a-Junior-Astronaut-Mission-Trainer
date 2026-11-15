@@ -78,7 +78,7 @@ window.Resources = {
             water: 100,
             oxygen: 100,
             food: 100,
-            materials: 60
+            materials: 80
         };
 
         this.items.forEach(resource => {

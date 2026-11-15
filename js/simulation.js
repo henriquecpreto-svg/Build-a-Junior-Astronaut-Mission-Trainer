@@ -114,10 +114,6 @@ window.Simulation = {
     for (let i = 0; i < Resources.items.length; i++) {
         let recurso = Resources.items[i];
 
-        if (recurso.id === "materials") {
-            continue;
-        }
-
         recurso.current = this.calcularRecursos(recurso);
     }
 },

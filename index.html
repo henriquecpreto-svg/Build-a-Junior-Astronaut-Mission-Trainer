@@ -13,16 +13,12 @@
 </head>
 <body>
     <div class="conteiner-all">
-        <div class="ceu">
-            <div class="estrelas"></div>
-            <div class="estrelas-pequenas"></div> 
-        </div>
-        <img src="assets/images/logo-jogo.png" alt="Logo Jogo" width="300">
+        <img src="assets/images/logo-jogo.png" alt="Logo Jogo" width="400">
 
         <div class="buttons">
-        <button id="botao-inciar">Iniciar Missão</button>
-        <button id="botao-comojogar" onclick="instrucoes()">Como jogar?</button>
-        <button id="botao-sobre" onclick="sobreProjeto()">Sobre o projeto</button>
+        <button id="botao-iniciar">🚀 INICIAR MISSÃO</button>
+        <button id="botao-comojogar" onclick="instrucoes()">❔ COMO JOGAR?</button>
+        <button id="botao-sobre" onclick="sobreProjeto()">ℹ SOBRE O PROJETO</button>
         </div>
 
 
@@ -32,7 +28,7 @@
                 <h2>1° História</h2>
                 <p>Ano de 2045. <br>
                 Uma missão internacional estabeleceu uma pequena base científica em Marte com o objetivo de estudar as condições ambientais do planeta e testar tecnologias necessárias para futuras missões humanas.  <br> <br>
-                O primeiro astronauta já está instalada no habitat. <br> <br>
+                O primeiro astronauta já está instalado no habitat. <br> <br>
             Entretanto, manter uma presença humana em Marte exige planejamento, recursos e decisões constantes. <br> <br>
             O jogador assume o cargo do astronauta, recebendo a responsabilidade de administrar a instalação durante seus primeiros 30 dias. <br> <br>
             Durante esse período, problemas ambientais, falhas técnicas e limitações de recursos poderão colocar a operação em risco. <br> <br>
@@ -62,7 +58,7 @@
                     <li>Relatório: Você recebe os resultados dos dias.</li>
                 </ol>
             </div> 
-            <button class="fechar-instrucoes" onclick="fecharInstrucoes()">Fechar Instruções</button>    
+            <button class="fechar-instrucoes" onclick="fecharInstrucoes()" id="fecharcomojogar">Fechar Instruções</button>    
         </div>
 
         <div class="sobre-o-projeto hidden" id="sobreprojeto">
@@ -73,7 +69,7 @@
                 O jogo apresenta situações inspiradas em desafios reais da engenharia espacial, exigindo que o jogador tome decisões considerando as limitações de energia, água, oxigênio, alimentos e proteção contra radiação. <br>
                 A experiência será apresentada por meio de uma central de controle interativa, na qual o usuário poderá acompanhar os indicadores da missão, construir instalações, realizar melhorias e responder a acontecimentos inesperados.</p>
             </div>
-            <button onclick="fecharSobre()">Fechar</button>
+            <button onclick="fecharSobre()" id="fecharsobre">Fechar</button>
         </div>
     </div>
 </body>

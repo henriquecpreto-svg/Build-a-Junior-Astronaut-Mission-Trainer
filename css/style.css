@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 
 * {
   margin: 0;
@@ -13,13 +14,18 @@
 }
 
 body {
-    background-image: url(assets);
+    background-image: url("/assets/images/background-img.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: var(--text-color);
     font-family: 'Share Tech Mono', monospace;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    min-height: 100%;
 }
 
 h1 {
@@ -41,17 +47,34 @@ h1 {
     display: none;
 }
 
+.buttons {
+  display: flex;
+  flex-direction: column;
+}
 
 button {
-    background-color: #D66B3D;
-    border: none;
-    padding: 20px 40px;
-    border-radius: 10px;
-    font-family: 'Share Tech Mono', monospace;
-    color: white;
-    position: center;
-    margin: 30px 20px;
-    transition: transform 0.3s ease-in-out;
+  display: block;
+  width: 480px;
+  margin: 12px auto;
+  padding: 18px 24px;
+  border-radius: 28px;
+  color: white;
+  font-family: 'Bungee', sans-serif;
+  font: 28px 'Bungee', sans-serif;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+#botao-iniciar {
+  background: linear-gradient(#ff7a18, #f32920);
+  border: 4px solid #ffd45c;
+  box-shadow: 0 0 18px #ff6a21;
+}
+
+#botao-comojogar, #botao-sobre, #fecharsobre, #fecharcomojogar {
+  background: linear-gradient(#203b5c, #08172e);
+  border: 3px solid #45baff;
+  box-shadow: 0 0 10px #168bff;
 }
 
 button:hover {
@@ -65,9 +88,14 @@ button:hover {
 }
 
 .card {
-    background-color: white;
+    background: linear-gradient(to right,#d21560,#57026d);
+    text-decoration-color: white;
     padding: 30px 40px;
     border-radius: 10px;
     margin-top: 30px;
     color: black;
+}
+
+.card,p,h2 {
+  color: white;
 }
